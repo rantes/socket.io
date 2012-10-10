@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="http://localhost:8081/socket.io/socket.io.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+</head>
+<body>
+<input type="text" name="you" id="you" /><button id="button">Send</button>
+Respuesta: <span id="answer"></span>
+<script type="text/javascript" charset="utf-8">
+  var chat = io.connect('http://localhost:8081/chat')
+    , news = io.connect('http://localhost:8081/news');
+  
+  chat.on('connect', function () {
+	  // connection
+  });
+  
+jQuery(document).ready(function($) {
+	chat.on('from server',function(data1){
+		console.log(data1);
+		$('#answer').html(data1.message);
+  	});
+	$('#button').click(function(){
+		chat.emit('from client', {message:$('#you').val()});
+		return false;
+	});
+});
+</script>
+</body>
+</html>
